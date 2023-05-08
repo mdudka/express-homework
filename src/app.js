@@ -9,7 +9,13 @@ app.use(express.json());
 app.use("/books", booksRouter);
 
 app.use((err, req, res, next) => {
-  res.send(err);
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
 app.listen(port, () => {
